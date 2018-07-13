@@ -73,6 +73,10 @@ class BloxRestore extends PolymerElement {
         type: String,
         value: 'Restore Account',
       },
+      binary: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
@@ -84,15 +88,30 @@ class BloxRestore extends PolymerElement {
     if(this.fileExtension != this.accept) {
       return false
     }
-    const file = event.target.files[0];
-    let reader = new FileReader();
-    reader.readAsText(file);
-    reader.onload = () => {
-        this.restoreData = reader.result;
-    };
-    reader.onerror = (error) => {
-        this.error = error;
-    };
-}
+
+    if(!this.binary) {
+      const file = event.target.files[0];
+      let reader = new FileReader();
+      reader.readAsText(file);
+      reader.onload = () => {
+          this.restoreData = reader.result;
+      };
+      reader.onerror = (error) => {
+          this.error = error;
+      };
+    }
+
+    if(this.binary) {
+      const file = event.target.files[0];
+      let reader = new FileReader();
+      reader.readAsBinaryString(file);
+      reader.onload = () => {
+          this.restoreData = reader.result;
+      };
+      reader.onerror = (error) => {
+          this.error = error;
+      };
+    }
+  }
 
 } window.customElements.define('blox-restore', BloxRestore);

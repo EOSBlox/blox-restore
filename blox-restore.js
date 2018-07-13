@@ -69,6 +69,11 @@ class BloxRestore extends PolymerElement {
         reflectToAttribute: true,
         notify: true,
       },
+      fileName: {
+        type: String,
+        reflectToAttribute: true,
+        notify: true,
+      },
       buttonText: {
         type: String,
         value: 'Restore Account',
@@ -83,8 +88,8 @@ class BloxRestore extends PolymerElement {
   _restore(event) {
     event.stopPropagation();
     event.preventDefault();
-    this.filename = event.target.files[0].name;
-    this.fileExtension = '.'+this.filename.split(".").slice(-1)[0] 
+    this.fileName = event.target.files[0].name;
+    this.fileExtension = '.'+this.fileName.split(".").slice(-1)[0] 
     if(this.fileExtension != this.accept) {
       return false
     }
@@ -106,6 +111,7 @@ class BloxRestore extends PolymerElement {
       let reader = new FileReader();
       reader.readAsBinaryString(file);
       reader.onload = () => {
+        console.log(reader.result)
           this.restoreData = reader.result;
       };
       reader.onerror = (error) => {
